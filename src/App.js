@@ -1,51 +1,75 @@
 import "./App.css";
-import { Container, Button, Box, Grid } from "@mui/material";
-import { styled, createTheme, ThemeProvider } from "@mui/system";
-import { CustomTheme } from "./Theme";
+import { useState } from "react";
+import {
+  Button,
+  Sheet,
+  Typography,
+  FormControl,
+  FormLabel,
+  Input,
+  Link,
+} from "@mui/joy";
+import { CssVarsProvider, useColorScheme } from "@mui/joy/styles";
 
-const CustomButton = styled("button")(({ theme }) => ({
-  color: theme.palette.primary.main,
-  backgroundColor: theme.palette.secondary.main,
-  padding: theme.spacing(2),
-  borderRadius: 50,
-}));
+function ModeToggle() {
+  const { mode, setMode } = useColorScheme();
+  const [mounted, setMounted] = useState(false);
 
-const CustomBox = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.primary.test,
-  height: theme.sizing.height.primary,
-}));
+  return (
+    <Button
+      variant="outlined"
+      onClick={() => {
+        setMode(mode === "light" ? "dark" : "light");
+      }}
+    >
+      {" "}
+      {mode === "light" ? "dark" : "light"}
+    </Button>
+  );
+}
 
 function App() {
   return (
-    <ThemeProvider theme={CustomTheme}>
-      <Container
-        maxWidth="sm"
+    <CssVarsProvider>
+      <ModeToggle />
+      <Sheet
         sx={{
+          width: 300,
+          mx: "auto",
+          my: 4,
+          poy: 3,
+          px: 2,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          gap: 2,
+          borderRadius: "sm",
+          boxShadow: "md",
         }}
       >
-        <Box
-          component="div"
-          mt={1}
-          sx={{
-            backgroundColor: "lightBlue",
-            border: "1px solid black",
-            borderRadius: "8px",
-            "&:hover": {
-              opacity: [0.9, 0.8, 0.7],
-            },
-          }}
+        <div>
+          <Typography lvel="h4" component="h1">
+            Welcome
+          </Typography>
+          <Typography level="body2">Sign in to continue</Typography>
+        </div>
+        <FormControl>
+          <FormLabel>Email</FormLabel>
+          <Input name="email" type="email" placeholder="andy@andy.com" />
+        </FormControl>
+        <FormControl>
+          <FormLabel>Password</FormLabel>
+          <Input name="password" type="password" placeholder="password" />
+        </FormControl>
+        <Button sx={{ mt: 1 }}>Log In</Button>
+        <Typography
+          endDecorator={<Link href="/sign-up">Sign Up</Link>}
+          fontSize="sm"
+          sx={{ alignSelf: "center" }}
         >
-          <h1>Andy Kleindienst</h1>
-          <CustomButton>Hi There!</CustomButton>
-        </Box>
-        <CustomBox component="div">
-          <CustomButton>Here's another button</CustomButton>
-        </CustomBox>
-      </Container>
-    </ThemeProvider>
+          Don't have an account?
+        </Typography>
+      </Sheet>
+    </CssVarsProvider>
   );
 }
 
